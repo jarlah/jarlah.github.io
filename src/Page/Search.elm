@@ -9,7 +9,7 @@ import Session exposing (Session)
 
 
 type alias Post =
-    { userId : String
+    { userId : Int
     , id : Int
     , title : String
     , body : String
@@ -17,7 +17,7 @@ type alias Post =
 
 
 type alias Model =
-    { session : Session, term : String, posts : List Post, loading : Bool }
+    { session : Session, term : String, posts : List Post, loading : Bool, error : String }
 
 
 type Msg
@@ -28,7 +28,7 @@ type Msg
 
 init : Session -> ( Model, Cmd Msg )
 init session =
-    ( { session = session, term = "", posts = [], loading = False }, Cmd.none )
+    ( { session = session, term = "", posts = [], loading = False, error = "" }, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -59,8 +59,8 @@ update msg model =
                     , Cmd.none
                     )
 
-                Err _ ->
-                    ( { model | loading = False }, Cmd.none )
+                Err error ->
+                    ( { model | loading = False, error = Debug.toString error }, Cmd.none )
 
         SetTerm term ->
             ( { model | term = term }, Cmd.none )
@@ -69,22 +69,23 @@ update msg model =
 postDecoder : Decoder Post
 postDecoder =
     Decoder.map4 Post
-        (Decoder.field "user" Decoder.string)
+        (Decoder.field "userId" Decoder.int)
         (Decoder.field "id" Decoder.int)
         (Decoder.field "title" Decoder.string)
         (Decoder.field "body" Decoder.string)
 
 
 view : Model -> { title : String, content : List (Html Msg) }
-view _ =
+view model =
     { title = "Search"
     , content =
         [ div []
-            [ h1 [] [ text "Search in posts on jsonplaceholder" ]
+            [ h1 [] [ text "Search for posts on jsonplaceholder" ]
             , div []
                 [ input [ onInput SetTerm ] []
                 , button [ onClick ExecuteSearch ] [ text "Search now" ]
                 ]
+            , div [] [ text model.error ]
             ]
         ]
     }
