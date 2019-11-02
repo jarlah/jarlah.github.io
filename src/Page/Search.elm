@@ -36,7 +36,7 @@ update msg model =
     case msg of
         ExecuteSearch ->
             -- Return your search command here
-            ( { model | loading = True, posts = [] }
+            ( { model | loading = True, posts = [], error = "" }
             , Http.get
                 { url = "https://jsonplaceholder.typicode.com/posts"
                 , expect = Http.expectJson SearchResultsReceived (Decoder.list postDecoder)
@@ -59,8 +59,8 @@ update msg model =
                     , Cmd.none
                     )
 
-                Err error ->
-                    ( { model | loading = False, error = Debug.toString error }, Cmd.none )
+                Err _ ->
+                    ( { model | loading = False, error = "Failed while searching jsonplaceholder api" }, Cmd.none )
 
         SetTerm term ->
             ( { model | term = term }, Cmd.none )
