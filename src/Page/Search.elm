@@ -1,6 +1,7 @@
 module Page.Search exposing (..)
 
-import Html exposing (Html, button, div, h1, input, text)
+import Html exposing (Html, a, button, div, h1, input, li, text, ul)
+import Html.Attributes exposing (href)
 import Html.Events exposing (onClick, onInput)
 import Http
 import Json.Decode as Decoder exposing (Decoder)
@@ -86,6 +87,13 @@ view model =
                 , button [ onClick ExecuteSearch ] [ text "Search now" ]
                 ]
             , div [] [ text model.error ]
+            , ul []
+                (List.map
+                    (\post ->
+                        li [] [ a [ href ("https://jsonplaceholder.typicode.com/posts/" ++ String.fromInt post.id) ] [ text ("#" ++ String.fromInt post.id ++ " - " ++ post.title) ] ]
+                    )
+                    model.posts
+                )
             ]
         ]
     }
