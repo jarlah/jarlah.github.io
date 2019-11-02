@@ -35,13 +35,13 @@ view model =
                 [ text "About" ]
             , div []
                 [ div []
-                    [ text "A simple about page" ]
+                    [ text "Who am I?" ]
                 , div [ onClick ReadMore, style "cursor" "pointer" ]
                     [ text "Click here to read more" ]
                 ]
             , if model.readMore then
                 div []
-                    [ text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." ]
+                    [ text "I am a professional full stack developer and senior software architect. If you are reading this, well you know where to find me and my projects." ]
 
               else
                 div []

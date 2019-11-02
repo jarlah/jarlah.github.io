@@ -30,7 +30,9 @@ view _ =
             [ h1 []
                 [ text "Home" ]
             , div []
-                [ text "This is a simple kick starter app" ]
+                [ text "Welcome to my simple github page!" ]
+            , div []
+                [ text "This page is made in Elm." ]
             ]
         ]
     }
